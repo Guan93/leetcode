@@ -21,7 +21,7 @@ class Solution:
     #     else:
     #         self._findTargetSumWays(nums, i + 1, sum + nums[i], S)
     #         self._findTargetSumWays(nums, i + 1, sum - nums[i], S)
-    
+
     # recursion with memo
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         s = sum(nums)
@@ -41,11 +41,11 @@ class Solution:
             subtract = self._findTargetSumWays(nums, i + 1, sum - nums[i], S, memo)
             memo[i][1000 + sum] = add + subtract
             return memo[i][1000 + sum]
-    
+
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         # P: sum of numbers with positive sign
         # N: sum of numbers with negative sign
-        # P - N = target => P = target + N # => 2 * P = target + N + P 
+        # P - N = target => P = target + N # => 2 * P = target + N + P
         #                => 2 * P = target + sum of nums
         # the problem is transformed to partition equal subset: pick numbers from num so
         # that they sum to target + sum of nums
@@ -56,6 +56,10 @@ class Solution:
 
         dp = [1] + [0] * target
         for num in nums:
+            # why reverse loop in the inner?
+            # the actual transition: dp[index][i] = dp[index - 1][i - nums[index]] if i > nums[index]
+            # if we'd like to use only one array for dp, we need to loop reversely
+            # so that the state needed won't be overriden
             i = target
             while i >= num:
                 dp[i] += dp[i - num]

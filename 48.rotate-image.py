@@ -7,6 +7,7 @@
 
 # @lc code=start
 class Solution:
+    # we can draw a coordinate and find out what flip operations can result in the desired rotation
     def rotate(self, matrix: List[List[int]]) -> None:
         """
         Do not return anything, modify matrix in-place instead.

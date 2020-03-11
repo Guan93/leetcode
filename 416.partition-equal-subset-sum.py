@@ -7,6 +7,7 @@
 
 # @lc code=start
 class Solution:
+    # dp 0/1 knapsack: O(ns) and O(ns)
     def canPartition(self, nums: List[int]) -> bool:
         s = sum(nums)
         # return False if the sum is odd
@@ -30,6 +31,7 @@ class Solution:
 
         return dp[n][target]
 
+    # optimized space dp
     def canPartition(self, nums: List[int]) -> bool:
         s = sum(nums)
         # return False if the sum is odd
@@ -45,5 +47,29 @@ class Solution:
                 for j in range(target + 1)
             ]
         return dp[target]
+
+    # backtrack with pruning
+    def canPartition(self, nums: List[int]) -> bool:
+        from functools import lru_cache
+
+        @lru_cache(None)
+        def _helper(i, curr):
+            if curr == target:
+                return True
+
+            for j in range(i + 1, len(nums)):
+                # since nums are already sorted, we can prune impossible paths here
+                if curr + nums[j] > target:
+                    return False
+                if _helper(j, curr + nums[j]):
+                    return True
+            return False
+
+        target, rem = divmod(sum(nums), 2)
+        if rem:
+            return False
+        nums.sort()
+
+        return _helper(-1, 0)
 
 # @lc code=end

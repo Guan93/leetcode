@@ -5,20 +5,24 @@
 #
 
 # @lc code=start
+
 # O(n^2) and O(n)
-# class Solution:
-#     def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
-#         res = [None] * len(people)
-#         people.sort(key=lambda x: (x[0], -x[1]))
-#         for p in people:
-#             num_nones = 0
-#             for i in range(len(res)):
-#                 if num_nones == p[1] and res[i] is None:
-#                     break
-#                 if res[i] is None:
-#                     num_nones += 1
-#             res[i] = p
-#         return res
+class Solution:
+    def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+        people.sort(key=lambda x: (x[0], -x[1]))
+        res = [None] * len(people)
+
+        for h, k in people:
+            count = k
+            for i in range(len(res)):
+                if res[i] is None:
+                    if count == 0:
+                        res[i] = [h, k]
+                        break
+                    else:
+                        count -= 1
+
+        return res
 
 
 # O(n^2) and O(n)

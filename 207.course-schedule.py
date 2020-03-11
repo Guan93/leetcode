@@ -48,6 +48,39 @@
 #         return not C.has_cycle
 
 
+# simplified implementation
+class Solution:
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        def dfs(i):
+            seen[i] = True
+            on_stack[i] = True
+
+            for nei in graph[i]:
+                if self.has_cycle:
+                    return
+                if on_stack[nei]:
+                    self.has_cycle = True
+                    return
+                if not seen[nei]:
+                    dfs(nei)
+            on_stack[i] = False
+
+        self.has_cycle = False
+
+        graph = [list() for _ in range(numCourses)]
+        for course, pre in prerequisites:
+            graph[pre].append(course)
+
+        seen = [False] * numCourses
+        on_stack = [False] * numCourses
+
+        for i in range(numCourses):
+            if not seen[i]:
+                dfs(i)
+
+        return not self.has_cycle
+
+
 # removing nodes with degree of zero. if nothing remains, there is no cycle
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:

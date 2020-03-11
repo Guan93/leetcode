@@ -7,6 +7,7 @@
 
 # @lc code=start
 class Solution:
+    # dp
     def maxProfit(self, prices: List[int]) -> int:
         if len(prices) < 2:
             return 0
@@ -22,5 +23,15 @@ class Solution:
 
         return max(s0[-1], s2[-1])
 
+    # dp with constant extra space
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+
+        hold, cash, cd = -prices[0], 0, 0
+        for price in prices[1:]:
+            hold, cash, cd = max(hold, cash - price), max(cash, cd), hold + price
+
+        return max(hold, cash, cd)
 
 # @lc code=end

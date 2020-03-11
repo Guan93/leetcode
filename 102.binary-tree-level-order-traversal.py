@@ -15,26 +15,28 @@
 
 class Solution:
     def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        from collections import deque
+
+        res = []
         if not root:
-            return []
+            return res
+        queue = deque([(root, 0)])
 
-        ans = []
-        queue = [[root]]
+        curr_level, curr_list = 0, []
         while queue:
-            level = queue.pop(0)
-            if not level:
-                break
-            queue.append([])
-            vals = []
-            for node in level:
-                if node:
-                    vals.append(node.val)
-                    queue[-1].append(node.left)
-                    queue[-1].append(node.right)
-            if vals:
-                ans.append(vals)
+            node, level = queue.popleft()
+            if curr_level == level:
+                curr_list.append(node.val)
+            else:
+                res.append(curr_list)
+                curr_level, curr_list = level, [node.val]
+            if node.left:
+                queue.append((node.left, level + 1))
+            if node.right:
+                queue.append((node.right, level + 1))
+        res.append(curr_list)
 
-        return ans
+        return res
 
 
 # @lc code=end

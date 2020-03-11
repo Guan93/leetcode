@@ -31,6 +31,7 @@ class Solution:
         num_set = set(nums)
 
         for num in nums:
+            # only process when the number is the start of a streak
             if num - 1 not in num_set:
                 curr_num = num
                 curr_streak = 1

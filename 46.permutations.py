@@ -9,27 +9,23 @@ from typing import List
 
 # class Solution:
 #     def permute(self, nums: List[int]) -> List[List[int]]:
-#         nums.sort()
-#         ans = []
-#         self._helper(nums, [], ans)
-#         return ans
+#         def backtrack(nums, curr):
+#             if len(nums) == 0:
+#                 res.append(curr)
 
-#     def _helper(self, nums: List[int], bt: List[int], ans: List[List[int]]) -> None:
-#         if len(nums) == 1:
-#             ans.append(bt + nums)
-#             return
+#             for i in range(len(nums)):
+#                 backtrack(nums[:i] + nums[i + 1:], curr + [nums[i]])
 
-#         for i in range(len(nums)):
-#             tmp = [num for num in nums]
-#             tmp.pop(i)
-#             self._helper(tmp, bt + [nums[i]], ans)
+#         res = []
+#         backtrack(nums, [])
+#         return res
 
 
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         def backtrack(first=0):
             if first == n:
-                output.append(nums[:])
+                output.append(nums[:])  # it is important to use slice [:] here to create a copy!
             for i in range(first, n):
                 nums[i], nums[first] = nums[first], nums[i]
                 backtrack(first + 1)

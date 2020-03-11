@@ -83,46 +83,46 @@ from collections import deque
 
 
 class Codec:
+
     def serialize(self, root):
-        """ Encodes a tree to a single string.
+        """Encodes a tree to a single string.
+
         :type root: TreeNode
         :rtype: str
         """
 
-        def rserialize(root, string):
-            """ a recursive helper function for the serialize() function."""
-            # check base case
-            if root is None:
-                string.append('n')
+        stack = [root]
+        res = []
+        while stack:
+            node = stack.pop()
+            if node:
+                res.append(str(node.val))
+                stack.append(node.right)
+                stack.append(node.left)
             else:
-                string.append(str(root.val))
-                rserialize(root.left, string)
-                rserialize(root.right, string)
-
-        string = []
-        rserialize(root, string)
-        return ','.join(string)
+                res.append("n")
+        return ','.join(res)
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
+
         :type data: str
         :rtype: TreeNode
         """
+        from collections import deque
 
-        def rdeserialize(l):
-            """ a recursive helper function for deserialization."""
-            if l[0] == 'n':
-                l.popleft()
+        def _helper():
+            s = data_q.popleft()
+            if s == 'n':
                 return None
 
-            root = TreeNode(l.popleft())
-            root.left = rdeserialize(l)
-            root.right = rdeserialize(l)
-            return root
+            node = TreeNode(int(s))
+            node.left = _helper()
+            node.right = _helper()
+            return node
 
         data_q = deque(data.split(','))
-        root = rdeserialize(data_q)
-        return root
+        return _helper()
 
 
 # Your Codec object will be instantiated and called as such:

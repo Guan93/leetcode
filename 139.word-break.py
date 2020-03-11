@@ -7,7 +7,9 @@
 
 # @lc code=start
 class Solution:
+    # bottom-up dp: O(n^2) and O(n)
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        wordDict = set(wordDict)
         n = len(s)
         can_break = [False] * (n + 1)
         can_break[0] = True
@@ -18,5 +20,20 @@ class Solution:
                     break
         return can_break[n]
 
+    # top-down dp: O(n^2) and O(n)
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        from functools import lru_cache
+
+        @lru_cache(None)
+        def _helper(end):
+            if end == 0:
+                return True
+            for start in range(end):
+                if _helper(start) and s[start: end] in wordDict:
+                    return True
+            return False
+
+        wordDict = set(wordDict)
+        return _helper(len(s))
 
 # @lc code=end

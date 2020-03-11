@@ -5,7 +5,7 @@
 #
 
 # @lc code=start
-# # binary search: O(log(n!)) (no worse than nlogn) and O(1)
+# # binary search: O(nlog(n)) and O(1)
 # # can simply do binary serach on each row and get same complexity
 # class Solution:
 #     def searchMatrix(self, matrix, target):
@@ -14,38 +14,28 @@
 #         :type target: int
 #         :rtype: bool
 #         """
-#         m = len(matrix)
-#         if m == 0:
+#         def binary_search(a, target, lo, hi):
+#             while lo < hi:
+#                 mid = lo + (hi - lo) // 2
+#                 if a[mid] <= target:
+#                     lo = mid + 1
+#                 else:
+#                     hi = mid
+#             return lo
+
+#         if not matrix:
 #             return False
-#         n = len(matrix[0])
+#         m, n = len(matrix), len(matrix[0])
 
-#         for start in range(min(m, n)):
-#             if (self._binary_search(matrix, target, start, True)
-#                     or self._binary_search(matrix, target, start, False)):
+#         for i in range(m):
+#             n = binary_search(matrix[i], target, 0, n)
+#             if n == 0:
+#                 return False
+#             if matrix[i][n - 1] == target:
 #                 return True
+
 #         return False
 
-#     def _binary_search(self, matrix, target, start, is_vertical):
-#         lo = start
-#         hi = len(matrix) - 1 if is_vertical else len(matrix[0]) - 1
-
-#         while lo <= hi:
-#             mid = lo + (hi - lo) // 2
-#             if is_vertical:
-#                 if target < matrix[mid][start]:
-#                     hi = mid - 1
-#                 elif target > matrix[mid][start]:
-#                     lo = mid + 1
-#                 else:
-#                     return True
-#             else:
-#                 if target < matrix[start][mid]:
-#                     hi = mid - 1
-#                 elif target > matrix[start][mid]:
-#                     lo = mid + 1
-#                 else:
-#                     return True
-#         return False
 
 # # divide and conquer: O(nlogn) and O(logn)
 # class Solution:

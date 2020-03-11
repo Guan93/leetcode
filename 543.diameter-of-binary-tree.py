@@ -44,11 +44,11 @@ class Solution:
             L, R = _depth(node.left), _depth(node.right)
             # while calculating the subtree depth,
             # also record the maximum diameter encountered in the meantime
-            self._ans = max(self._ans, L + R + 1)
+            self._ans = max(self._ans, L + R)
             return max(L, R) + 1
 
         _depth(root)
-        return self._ans - 1
+        return self._ans
 
 
 # @lc code=end

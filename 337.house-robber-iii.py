@@ -30,5 +30,17 @@ class Solution:
         prev1 = max(l_prev2 + r_prev2 + node.val, prev2)
         return prev2, prev1
 
+    # more concise
+    def rob(self, root: TreeNode) -> int:
+        def _helper(root):
+            if not root:
+                return 0, 0
+
+            left = _helper(root.left)
+            right = _helper(root.right)
+            return root.val + left[1] + right[1], max(left) + max(right)
+
+        return max(_helper(root))
+
 
 # @lc code=end

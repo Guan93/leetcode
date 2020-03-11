@@ -14,7 +14,7 @@
 
 
 class Solution:
-    ans = 0
+    ans = None
 
     # recursion O(n) and O(n)
     # def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode',
@@ -23,7 +23,7 @@ class Solution:
     #     return self.ans
 
     # def _dfs(self, node, p, q):
-    #     if not node:
+    #     if self.ans or not node:
     #         return False
     #     left = self._dfs(node.left, p, q)
     #     right = self._dfs(node.right, p, q)

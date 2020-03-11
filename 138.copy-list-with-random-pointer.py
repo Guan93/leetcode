@@ -44,7 +44,7 @@ class Solution:
             self._visited[node] = Node(node.val, None, None)
         return self._visited[node]
 
-    # Iterative, O(N) and O(N)
+    # Recursive, O(N) and O(N)
     # def copyRandomList(self, head: 'Node') -> 'Node':
     #     if head is None:
     #         return None

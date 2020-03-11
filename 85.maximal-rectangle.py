@@ -14,22 +14,23 @@
 #         if not matrix:
 #             return 0
 #         m, n = len(matrix), len(matrix[0])
-
-#         max_area = 0
 #         dp = [[0] * n for _ in range(m)]
+#         max_rec = 0
+
 #         for i in range(m):
 #             for j in range(n):
-#                 if matrix[i][j] == '0':
-#                     continue
-#                 dp[i][j] = dp[i][j - 1] + 1
-#                 max_width = dp[i][j]
-#                 for k in range(i, -1, -1):
-#                     max_width = min(dp[k][j], max_width)
-#                     max_area = max(max_width * (i - k + 1), max_area)
-#         return max_area
+#                 if matrix[i][j] == '1':
+#                     dp[i][j] = 1 + (dp[i][j - 1] if j > 0 else 0)
+#                     k = i
+#                     curr_width = float("inf")
+#                     while k >= 0 and dp[k][j] > 0:
+#                         curr_width = min(dp[k][j], curr_width)
+#                         max_rec = max(curr_width * (i - k + 1), max_rec)
+#                         k -= 1
+#         return max_rec
 
 
-# 3. dp with better algo on histograms: O(mn) and O(mn) (see #84)
+# 3. dp with better algo on histograms: O(mn) and O(n) (see #84)
 class Solution:
     def maximalRectangle(self, matrix: List[List[str]]) -> int:
         if not matrix:
@@ -37,14 +38,12 @@ class Solution:
         m, n = len(matrix), len(matrix[0])
 
         max_area = 0
-        dp = [[0] * n for _ in range(m)]
+        dp = [0] * n
         for i in range(m):
             for j in range(n):
-                if matrix[i][j] == '1':
-                    dp[i][j] = dp[i - 1][j] + 1
+                dp[j] = dp[j] + 1 if matrix[i][j] == '1' else 0
+            max_area = max(max_area, self.largestRectangleArea(dp))
 
-        for i in range(m):
-            max_area = max(max_area, self.largestRectangleArea(dp[i]))
         return max_area
 
     def largestRectangleArea(self, heights: List[int]) -> int:
@@ -57,6 +56,40 @@ class Solution:
         while stack[-1] != -1:
             max_area = max(heights[stack.pop()] * (len(heights) - stack[-1] - 1),
                            max_area)
+        return max_area
+
+
+# 4. dp: O(mn) and O(n)
+class Solution:
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        if not matrix:
+            return 0
+        m, n = len(matrix), len(matrix[0])
+
+        left = [0] * n
+        right = [n] * n
+        height = [0] * n
+        max_area = 0
+
+        for i in range(m):
+            curr_left, curr_right = 0, n
+            # update left
+            for j in range(n):
+                if matrix[i][j] == '1':
+                    left[j] = max(left[j], curr_left)
+                else:
+                    left[j], curr_left = 0, j + 1
+            #update right
+            for j in reversed(range(n)):
+                if matrix[i][j] == '1':
+                    right[j] = min(right[j], curr_right)
+                else:
+                    right[j], curr_right = n, j
+            # update height and max_area
+            for j in range(n):
+                height[j] = height[j] + 1 if matrix[i][j] == '1' else 0
+                max_area = max(max_area, height[j] * (right[j] - left[j]))
+
         return max_area
 
 

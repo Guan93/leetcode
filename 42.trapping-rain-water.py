@@ -55,6 +55,22 @@
 #             stack.append(current)
 #             current += 1
 #         return ans
+#
+#    # a more straight forward stack solution
+#    def trap(self, height: List[int]) -> int:
+#        stack = []
+#        total_amount = 0
+#        left_high = 0
+#        for h in height:
+#            num = 1
+#            while stack and h >= stack[-1][1]:
+#                num1, h1 = stack.pop()
+#                total_amount += (min(h, left_high) - h1) * num1
+#                num += num1
+#            if h >= left_high:
+#                left_high = h
+#            stack.append((num, h))
+#        return total_amount
 
 
 # two pointers: O(n) and O(1)

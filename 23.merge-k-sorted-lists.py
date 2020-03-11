@@ -13,25 +13,28 @@
 
 # brute force: put all numbers in a array and sort it: O(nlogn) and O(n)
 
-# improve by priority queue: O(nlogk) and O(n)
-from queue import PriorityQueue
 
-
+# improve by priority queue: O(nlogk) and O(k)
 class Solution:
     def mergeKLists(self, lists: List[ListNode]) -> ListNode:
-        head = point = ListNode(0)
-        pq = PriorityQueue()
-        for i, node in enumerate(lists):
-            if node:
-                pq.put((node.val, i, node))
-        while not pq.empty():
-            _, i, node = pq.get()
-            point.next = node
-            node = node.next
-            if node:
-                pq.put((node.val, i, node))
-            point = point.next
-        return head.next
+        import heapq
+
+        heads = []
+        for i in range(len(lists)):
+            if lists[i]:
+                heapq.heappush(heads, (lists[i].val, i))
+
+        dummy = ListNode(0)
+        head = dummy
+        while heads:
+            _, i = heapq.heappop(heads)
+            head.next = lists[i]
+            head = head.next
+            lists[i] = lists[i].next
+            if lists[i]:
+                heapq.heappush(heads, (lists[i].val, i))
+
+        return dummy.next
 
 
 # # O(kn) and O(1)
@@ -58,7 +61,7 @@ class Solution:
 #         return dummy.next
 
 
-# # divide and conquer: O(nlogk) and O(1)
+# # divide and conquer: O(nlogk)(every node is visited logk times) and O(log(k))
 # class Solution:
 #     def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
 #         dummy = ListNode(0)

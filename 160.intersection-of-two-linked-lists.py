@@ -13,7 +13,7 @@
 
 
 class Solution(object):
-    # O(N) and O(1) without knowing lengths
+    # O(N) and O(1) without knowing lengths: essentially the same as finding the length first
     def getIntersectionNode(self, headA, headB):
         if not (headA and headB):
             return None
@@ -29,27 +29,26 @@ class Solution(object):
     #     :type head1, head1: ListNode
     #     :rtype: ListNode
     #     """
-    #     lenA = lenB = 0
-    #     currA, currB = headA, headB
-    #     while currA:
-    #         currA = currA.next
-    #         lenA += 1
-    #     while currB:
-    #         currB = currB.next
-    #         lenB += 1
-    #     # make sure A is longer
-    #     if lenA > lenB:
-    #         curr_long, curr_short = headA, headB
-    #         skip = lenA - lenB
-    #     else:
-    #         curr_long, curr_short = headB, headA
-    #         skip = lenB - lenA
-    #     for i in range(skip):
-    #         curr_long = curr_long.next
-    #     while curr_long != curr_short:
-    #         curr_long = curr_long.next
-    #         curr_short = curr_short.next
-    #     return curr_long
+    #     lenA, lenB = self.get_length(headA), self.get_length(headB)
+    #     if lenA < lenB:
+    #         lenA, lenB, headA, headB = lenB, lenA, headB, headA
+
+    #     diff = lenA - lenB
+    #     while diff:
+    #         diff, headA = diff - 1, headA.next
+
+    #     while headA and headB:
+    #         if headA == headB:
+    #             return headA
+    #         headA, headB = headA.next, headB.next
+
+    #     return None
+
+    # def get_length(self, head):
+    #     count = 0
+    #     while head:
+    #         count, head = count + 1, head.next
+    #     return count
 
     # stack: O(N) and O(N)
     # def getIntersectionNode(self, headA, headB):

@@ -23,12 +23,10 @@ class Solution:
         def _helper(node):
             if not node:
                 return 0
-            left_max = _helper(node.left)
-            right_max = _helper(node.right)
-            node_max = max(left_max, right_max, 0) + node.val
-            self._global_max = max(self._global_max, node_max,
-                                   node.val + left_max + right_max)
-            return node_max
+            left_max = max(_helper(node.left), 0)
+            right_max = max(_helper(node.right), 0)
+            self._global_max = max(self._global_max, left_max + right_max + node.val)
+            return node.val + max(left_max, right_max)
 
         _helper(root)
         return self._global_max

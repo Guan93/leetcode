@@ -7,20 +7,18 @@
 # @lc code=start
 
 # # O(n) and O(n)
-# from collections import Counter
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        seen = set()
+        max_positive = 0
+        for num in nums:
+            max_positive = max(max_positive, num)
+            seen.add(num)
 
-# class Solution:
-#     def firstMissingPositive(self, nums: List[int]) -> int:
-#         count = Counter()
-#         for num in nums:
-#             if num <= 0 or num > len(nums):
-#                 continue
-#             count[num] += 1
-
-#         for i in range(1, len(nums) + 1):
-#             if count[i] == 0:
-#                 return i
-#         return len(nums) + 1
+        for i in range(1, max_positive + 1):
+            if i not in seen:
+                return i
+        return max_positive + 1
 
 
 # O(n) and O(1)
@@ -49,6 +47,23 @@ class Solution:
         for i in range(n):
             if nums[i] > 0:
                 return i + 1
+        return n + 1
+
+
+# O(n) and O(1)
+class Solution:
+    def firstMissingPositive(self, nums: List[int]) -> int:
+        n = len(nums)
+
+        # put positive numbers to their correct positions
+        for i in range(n):
+            while nums[i] > 0 and nums[i] <= n and nums[nums[i] - 1] != nums[i]:
+                nums[nums[i] - 1], nums[i] = nums[i], nums[nums[i] - 1]
+
+        for i in range(n):
+            if i + 1 != nums[i]:
+                return i + 1
+
         return n + 1
 
 

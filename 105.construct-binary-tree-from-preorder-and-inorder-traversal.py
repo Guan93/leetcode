@@ -16,6 +16,7 @@ class TreeNode:
         self.right: "Optional[TreeNode]" = None
 
 
+# O(N) by master theorem and O(N) for storage of index
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
         index = {inorder[i]: i for i in range(len(inorder))}
@@ -59,7 +60,5 @@ class Solution:
                                      inorder_index + 1, in_end)
         return root
 
-
-# TODO: Iterative Solution
 
 # @lc code=end
