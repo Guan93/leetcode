@@ -38,5 +38,38 @@ class Solution:
 
         return list(edges)
 
+    # Tarjan Algorithm: http://www.cs.umd.edu/class/fall2017/cmsc451-0101/Lects/lect04-edge-connectivity.pdf
+    def criticalConnections(self, n: int, connections: List[List[int]]) -> List[List[int]]:
+        from collections import defaultdict
+
+        def dfs(i, curr_time):
+            low[i] = ts[i] = curr_time
+
+            for nei in graph[i]:
+                # tree edge
+                if ts[nei] is None:
+                    dfs(nei, curr_time + 1)
+                    parents[nei] = i
+                    low[i] = min(low[i], low[nei])
+                # back edge
+                elif ts[nei] != curr_time - 1:
+                    low[i] = min(low[i], ts[nei])
+
+        low = [None] * n
+        ts = [None] * n
+        parents = [None] * n
+        bridges = []
+
+        graph = defaultdict(list)
+        for v1, v2 in connections:
+            graph[v1].append(v2)
+            graph[v2].append(v1)
+
+        dfs(0, 0)
+        for i in range(n):
+            if parents[i] is not None and low[i] >= ts[i]:
+                bridges.append([parents[i], i])
+        return bridges
+
 # @lc code=end
 
